@@ -108,6 +108,13 @@
       margin-bottom: 16px;
     }
 
+    .login-error {
+      color: var(--danger);
+      font-size: 12px;
+      margin-top: 12px;
+      min-height: 1em;
+    }
+
     label {
       display: block;
       color: var(--green-3);
@@ -384,7 +391,8 @@
         <input id="pass" type="password" placeholder="Enter password" />
       </div>
 
-      <button type="button" onclick="startScan()">Authenticate</button>
+      <button type="button" onclick="startScan()">Login to Continue</button>
+      <p class="login-error" id="login-error" role="alert" aria-live="polite"></p>
 
       <div class="meta">System v7.4.2</div>
     </section>
@@ -425,6 +433,18 @@
     }
 
     function startScan() {
+      const username = document.getElementById('user').value.trim();
+      const password = document.getElementById('pass').value.trim();
+      const loginError = document.getElementById('login-error');
+
+      if (!username || !password) {
+        loginError.textContent = 'Enter both username and password to authenticate.';
+        document.getElementById(!username ? 'user' : 'pass').focus();
+        return;
+      }
+
+      loginError.textContent = '';
+
       const login = document.getElementById('login');
       const scan = document.getElementById('scan');
       if (login) login.classList.add('hidden');
@@ -477,4 +497,3 @@
 </body>
 </html>
 ```
-
