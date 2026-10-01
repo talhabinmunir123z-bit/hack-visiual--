@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -219,6 +218,40 @@
       margin-bottom: 22px;
     }
 
+    .demo-alerts {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 5;
+      display: grid;
+      gap: 10px;
+      width: min(360px, calc(100vw - 32px));
+    }
+
+    .demo-alert {
+      padding: 14px 16px;
+      color: var(--text);
+      background: rgba(10, 24, 18, 0.96);
+      border: 1px solid var(--danger);
+      border-radius: 10px;
+      box-shadow: 0 0 18px rgba(255, 77, 77, 0.3);
+      animation: pulse 1s ease-in-out 2;
+    }
+
+    .demo-alert strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--danger);
+      font-size: 12px;
+      letter-spacing: 1px;
+    }
+
+    .demo-alert p {
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
     .ring {
       width: 126px;
       height: 126px;
@@ -397,21 +430,23 @@
       <div class="meta">System v7.4.2</div>
     </section>
 
+    <div class="demo-alerts" id="demo-alerts" aria-live="polite" aria-atomic="false"></div>
+
     <section class="scan-panel hidden" id="scan">
       <div class="scan-top">
-        <h2 class="scan-title">Threat Scan</h2>
+        <h2 class="scan-title">Security Demo</h2>
         <span class="orb"></span>
       </div>
 
-      <div class="scan-message">Unauthorized access detected</div>
+      <div class="scan-message">Simulation only — no real device scan is running</div>
 
       <div class="ring"></div>
       <div class="progress"><div class="progress-bar" id="bar"></div></div>
       <div class="percent" id="percent">0%</div>
 
-      <div class="terminal" id="terminal">&gt; Initializing system audit...</div>
+      <div class="terminal" id="terminal">&gt; Initializing demo animation...</div>
       <div class="time" id="timer">05:00</div>
-      <div class="footer-text">Monitoring active</div>
+      <div class="footer-text">Demo simulation only</div>
     </section>
   </div>
 
@@ -424,12 +459,63 @@
       if (!('speechSynthesis' in window)) return;
 
       const voice = new SpeechSynthesisUtterance(
-        "Warning. Sensitive app data is being leaked. Security breach detected. Immediate action required."
+        "This is a demo simulation. No device has been hacked, and no personal data is being accessed or leaked."
       );
       voice.rate = 0.8;
       voice.pitch = 0.7;
       voice.volume = 1;
       window.speechSynthesis.speak(voice);
+    }
+
+    function showDemoAlert(title, message) {
+      const alerts = document.getElementById('demo-alerts');
+      const alert = document.createElement('div');
+      const heading = document.createElement('strong');
+      const description = document.createElement('p');
+
+      alert.className = 'demo-alert';
+      alert.setAttribute('role', 'status');
+      heading.textContent = title;
+      description.textContent = message;
+      alert.append(heading, description);
+      alerts.append(alert);
+
+      setTimeout(() => alert.remove(), 10000);
+    }
+
+    async function showDemoNotifications() {
+      if (!window.isSecureContext || !('Notification' in window)) {
+        showDemoAlert(
+          'BROWSER NOTIFICATIONS UNAVAILABLE',
+          'This demo needs browser notification support on a secure connection.'
+        );
+        return;
+      }
+
+      let permission = Notification.permission;
+      if (permission === 'default') {
+        permission = await Notification.requestPermission();
+      }
+
+      if (permission !== 'granted') {
+        showDemoAlert(
+          'DEMO NOTIFICATIONS NOT ALLOWED',
+          'Allow browser notifications to see the simulated security alerts.'
+        );
+        return;
+      }
+
+      new Notification('SIMULATED SECURITY ALERT', {
+        body: 'Demo only: no device scan was performed and your device has not been hacked.',
+        tag: 'security-demo-alert'
+      });
+
+      setTimeout(() => {
+        new Notification('SIMULATED DATA-LEAK ALERT', {
+          body: 'Demo only: no personal data was accessed, collected, or sent.',
+          tag: 'data-leak-demo-alert'
+        });
+      }, 2500);
     }
 
     function startScan() {
@@ -450,19 +536,14 @@
       if (login) login.classList.add('hidden');
       if (scan) scan.classList.remove('hidden');
 
+      showDemoNotifications();
+
       const bar = document.getElementById('bar');
       const percent = document.getElementById('percent');
       const timer = document.getElementById('timer');
       const terminal = document.getElementById('terminal');
 
-      let voiceCount = 0;
-      function repeatVoice() {
-        if (voiceCount >= 10) return;
-        speakWarning();
-        voiceCount++;
-        setTimeout(repeatVoice, 5000);
-      }
-      repeatVoice();
+      speakWarning();
 
       if (scanInterval) clearInterval(scanInterval);
 
@@ -481,13 +562,13 @@
         if (time < 0) time = 300;
 
         const lines = [
-          '> Scanning kernel modules...',
-          '> Checking access vectors...',
-          '> Validating system integrity...',
-          '> Mapping network traffic...',
-          '> Monitoring active processes...',
-          '> Analyzing encryption layers...',
-          '> Compiling security report...'
+          '> Demo animation: kernel scan simulated...',
+          '> Demo animation: access checks simulated...',
+          '> Demo animation: system checks simulated...',
+          '> Demo animation: network analysis simulated...',
+          '> Demo animation: process monitor simulated...',
+          '> Demo animation: encryption check simulated...',
+          '> Demo animation: report generation simulated...'
         ];
 
         terminal.textContent = lines[Math.floor(Math.random() * lines.length)];
@@ -496,4 +577,3 @@
   </script>
 </body>
 </html>
-```
