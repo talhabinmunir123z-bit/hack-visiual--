@@ -1,0 +1,173 @@
+:root {
+    --background: #031d12;
+    --panel-background: rgba(0, 18, 10, .94);
+    --green: #2dff8a;
+    --dark-green: #062d1b;
+    --terminal-green: #7dffb7;
+    --red: #ff2222;
+    --muted: #9bc9ad;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    align-items: center;
+    background: radial-gradient(circle at center, #0d4d2f 0%, var(--background) 48%, #010b08 100%);
+    color: var(--green);
+    display: flex;
+    font-family: monospace;
+    justify-content: center;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+.code {
+    animation: move 4s linear infinite;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent 0,
+        transparent 18px,
+        var(--green) 19px
+    );
+    inset: 0;
+    opacity: .18;
+    position: fixed;
+    z-index: 1;
+}
+
+.panel {
+    background: var(--panel-background);
+    border: 1px solid var(--green);
+    box-shadow: 0 0 35px var(--green);
+    max-width: 650px;
+    padding: 30px;
+    position: relative;
+    text-align: center;
+    width: 90%;
+    z-index: 2;
+}
+
+.logo {
+    font-size: 28px;
+    font-weight: bold;
+    letter-spacing: 5px;
+    margin-bottom: 20px;
+}
+
+.secure {
+    color: #aaa;
+    margin-bottom: 25px;
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+input,
+button {
+    width: 100%;
+}
+
+input {
+    background: var(--dark-green);
+    border: 1px solid var(--green);
+    color: var(--green);
+    margin: 8px 0;
+    outline: none;
+    padding: 14px;
+}
+
+button {
+    background: var(--green);
+    border: 0;
+    color: var(--background);
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 15px;
+    padding: 14px;
+}
+
+button:hover {
+    box-shadow: 0 0 20px var(--green);
+}
+
+small {
+    color: var(--muted);
+    display: block;
+    margin-top: 20px;
+}
+
+.hidden {
+    display: none;
+}
+
+.danger {
+    animation: blink .6s infinite;
+    color: var(--red);
+}
+
+.scanner {
+    animation: spin 1s linear infinite;
+    border: 4px solid var(--green);
+    border-radius: 50%;
+    border-top-color: transparent;
+    height: 110px;
+    margin: 25px auto;
+    width: 110px;
+}
+
+.progress {
+    border: 1px solid var(--green);
+    height: 12px;
+}
+
+.progress span {
+    background: var(--green);
+    box-shadow: 0 0 15px var(--green);
+    display: block;
+    height: 100%;
+    width: 0;
+}
+
+#percent {
+    margin: 12px;
+}
+
+.terminal {
+    color: var(--terminal-green);
+    font-size: 12px;
+    height: 80px;
+    margin: 15px 0;
+    overflow: hidden;
+    text-align: left;
+}
+
+.timer {
+    color: var(--red);
+    font-size: 38px;
+    font-weight: bold;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes blink {
+    50% {
+        opacity: .3;
+    }
+}
+
+@keyframes move {
+    to {
+        background-position: 0 100px;
+    }
+}
+
